@@ -1,12 +1,12 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-const Movie = require('./movie'); // Import movie model
+const Movie = require('./movie');
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.use(express.json()); // Middleware to parse JSON bodies
+app.use(express.json());
 
 mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log('Connected to MongoDB'))
