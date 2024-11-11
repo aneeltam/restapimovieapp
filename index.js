@@ -35,6 +35,7 @@ app.get('/api/:id', async (req, res) => {
 });
 
 app.post('/api/add', async (req, res) => {
+    console.log(req.body);
     const { title, genre, releaseYear, plot, poster } = req.body;
     try {
         const newMovie = new Movie({ title, genre, releaseYear, plot, poster });
@@ -44,6 +45,7 @@ app.post('/api/add', async (req, res) => {
         res.status(400).json({ error: error.message });
     }
 });
+
 
 app.put('/api/update/:id', async (req, res) => {
     try {
