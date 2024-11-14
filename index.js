@@ -1,18 +1,24 @@
+// Get environment variables from .env
 require('dotenv').config();
+
+// Import other libaries
 const express = require('express');
 const mongoose = require('mongoose');
 const Movie = require('./movie');
 
+// Start Express and define the port
 const app = express();
 const port = process.env.PORT || 3000;
 
+// Allows the app to read JSON data in requests
 app.use(express.json());
 
+// Connect to MongoDB using the MONGO_URI environment variable
 mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log('Connected to MongoDB'))
     .catch((error) => { console.error('MongoDB connection error:', error); process.exit(1); });
 
-// Routes
+// Route: Get all movies from the database
 app.get('/api/getall', async (req, res) => {
     try {
         const movies = await Movie.find();
@@ -22,6 +28,7 @@ app.get('/api/getall', async (req, res) => {
     }
 });
 
+// Route: Get a single movie by its ID
 app.get('/api/:id', async (req, res) => {
     try {
         const movie = await Movie.findById(req.params.id);
@@ -34,6 +41,7 @@ app.get('/api/:id', async (req, res) => {
     }
 });
 
+// Route: Add a new movie to the database
 app.post('/api/add', async (req, res) => {
     console.log(req.body);
     const { title, genre, releaseYear, plot, poster } = req.body;
@@ -46,7 +54,7 @@ app.post('/api/add', async (req, res) => {
     }
 });
 
-
+// Route: Update a movie by its ID
 app.put('/api/update/:id', async (req, res) => {
     try {
         const updatedMovie = await Movie.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -59,6 +67,7 @@ app.put('/api/update/:id', async (req, res) => {
     }
 });
 
+// Route: Delete a movie by its ID
 app.delete('/api/delete/:id', async (req, res) => {
     try {
         const deletedMovie = await Movie.findByIdAndDelete(req.params.id);
@@ -71,6 +80,7 @@ app.delete('/api/delete/:id', async (req, res) => {
     }
 });
 
+// Start the server and listen on the specific port
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
 });
