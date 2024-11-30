@@ -5,10 +5,14 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const Movie = require('./movie');
+const cors = require('cors');
 
 // Start Express and define the port
 const app = express();
 const port = process.env.PORT || 3000;
+
+// Use CORS middleware - This allows all origins by default
+app.use(cors());
 
 // Allows the app to read JSON data in requests
 app.use(express.json());
