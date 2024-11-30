@@ -1,7 +1,7 @@
 // Get environment variables from .env
 require('dotenv').config();
 
-// Import other libaries
+// Import other libraries
 const express = require('express');
 const mongoose = require('mongoose');
 const Movie = require('./movie');
@@ -11,8 +11,14 @@ const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Use CORS middleware - This allows all origins by default
-app.use(cors({ origin: '*' }));
+// CORS setup
+const corsOptions = {
+    origin: '*', // Allow all origins
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+};
+
+app.use(cors(corsOptions));  // Use the CORS middleware here
 
 // Allows the app to read JSON data in requests
 app.use(express.json());
