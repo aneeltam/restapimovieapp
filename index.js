@@ -12,7 +12,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // Use CORS middleware - This allows all origins by default
-app.use(cors());
+app.use(cors({ origin: '*' }));
 
 // Allows the app to read JSON data in requests
 app.use(express.json());
