@@ -5,20 +5,10 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const Movie = require('./movie');
-const cors = require('cors');
 
 // Start Express and define the port
 const app = express();
 const port = process.env.PORT || 3000;
-
-// CORS setup
-const corsOptions = {
-    origin: '*', // Allow all origins
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-};
-
-app.use(cors(corsOptions));  // Use the CORS middleware here
 
 // Allows the app to read JSON data in requests
 app.use(express.json());
@@ -89,6 +79,11 @@ app.delete('/api/delete/:id', async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+
+// Catch-all handler to serve React app for unknown routes
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+  });
 
 // Start the server and listen on the specific port
 app.listen(port, () => {
