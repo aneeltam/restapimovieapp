@@ -2,8 +2,8 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-const Movie = require('./movie');
 const path = require('path');
+const Movie = require('./movie'); // Your Mongoose movie model
 
 // Initialize Express app
 const app = express();
@@ -14,17 +14,18 @@ app.use(express.json());
 
 // Connect to MongoDB
 mongoose
-  .connect(process.env.MONGO_URI)
+  .connect(process.env.MONGO_URI)  // No need for useNewUrlParser and useUnifiedTopology anymore
   .then(() => console.log('Connected to MongoDB'))
   .catch((error) => {
     console.error('MongoDB connection error:', error);
     process.exit(1);
   });
 
-// Serve React build folder
+// Serve the React frontend from the build folder
 app.use(express.static(path.join(__dirname, 'build')));
 
 // API Routes
+// Fetch all movies
 app.get('/api/getall', async (req, res) => {
   try {
     const movies = await Movie.find();
@@ -34,6 +35,7 @@ app.get('/api/getall', async (req, res) => {
   }
 });
 
+// Fetch a single movie by ID
 app.get('/api/:id', async (req, res) => {
   try {
     const movie = await Movie.findById(req.params.id);
@@ -46,6 +48,7 @@ app.get('/api/:id', async (req, res) => {
   }
 });
 
+// Add a new movie
 app.post('/api/add', async (req, res) => {
   const { title, genre, releaseYear, plot, poster } = req.body;
   try {
@@ -57,6 +60,7 @@ app.post('/api/add', async (req, res) => {
   }
 });
 
+// Update a movie by ID
 app.put('/api/update/:id', async (req, res) => {
   try {
     const updatedMovie = await Movie.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -69,6 +73,7 @@ app.put('/api/update/:id', async (req, res) => {
   }
 });
 
+// Delete a movie by ID
 app.delete('/api/delete/:id', async (req, res) => {
   try {
     const deletedMovie = await Movie.findByIdAndDelete(req.params.id);
@@ -81,7 +86,7 @@ app.delete('/api/delete/:id', async (req, res) => {
   }
 });
 
-// Catch-all handler to serve React app for unknown routes
+// Catch-all handler to serve the React app for all unknown routes
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
