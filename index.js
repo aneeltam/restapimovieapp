@@ -3,7 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
-const Movie = require('./movie'); // Your Mongoose movie model
+const Movie = require('./movie');
 
 // Initialize Express app
 const app = express();
